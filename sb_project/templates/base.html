@@ -1,0 +1,80 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Micro Blog</title>
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="{% static "css/style.css" %}">
+    </head>
+    <body>
+      <nav class="navbar navbar-default">
+        <div class="container">
+          <!-- Brand and toggle get grouped for better mobile display -->
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{% url 'home' %}">Micro Blog</a>
+          </div>
+
+          <!-- Collect the nav links, forms, and other content for toggling -->
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+              {% url 'home' as home_path %}
+              {% url 'post' as home_path %}
+              {% if user.is_authenticated %}
+              <li{% if home_path == request.path %} class="active"{% endif %}><a href="{% url 'home' %}">My Feed{% if home_path == request.path %}<span class="sr-only"> (current)</span>{% endif %}</a></li>
+              <li{% if home_path == request.path %} class="active"{% endif %}><a href="{% url 'new_post' %}">Post{% if home_path == request.path %}<span class="sr-only"> (current)</span>{% endif %}</a></li>
+              {% endif %}
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              {% if user.is_authenticated %}
+              <li><a href="{% url 'user_logout' %}">Log Out</a></li>
+              {% else %}
+              <li><a href="{% url 'user_new' %}">Sign Up</a></li>
+              <li><a href="{% url 'user_login' %}">Log In</a></li>
+              {% endif %}
+            </ul>
+          </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+      </nav>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8">
+              {% block content %}
+              {% endblock %}
+          </div>
+          <div class="col-lg-4">
+            <h1>Micro Blog Project</h1>
+            <p>This Django project collect, stores and displays current and historic data foreign exchange rates published by the European Central Bank for a selected basket of currencies. Currencies can be converted at historic rates and a chart displays the rates between two currencies for a selected period.</p>
+            <p><b>Collecting Data.</b></br>Rates are collected from the api ‘https://api.fixer.io/’, using coreapi. A dataset consisting of the date and selected currencies are saved into the sqlite database.</p>
+            <p><b>Displaying a chart.</b></br>The django-jchart app is used to effectively and quickly render charts. You may view charts of rates for any two currencies between any two dates. The charts are called asynchronously so there is no need to refresh the page.</p>
+            <p><b>Displaying a rate calculation.</b></br>An amount may be converted from one currency to another at the current date or a historic date. Again this is done asynchronously so the calculation is displayed without refreshing the page.</p>
+            <p><b>Skills utilized.</b></p>
+            <p><b>Backend:</b>
+              <ul>
+                <li>Python 3.6</li>
+                <li>Django 1.11.7</li>
+                <li>coreapi</li>
+              </ul>
+
+              <b>Frontend:</b>
+              <ul>
+                <li>JQuery 3.1</li>
+                <li>Bootstrap 3.3</li>
+                <li>Chart.js 2.4</li>
+              </ul></p>
+
+          </div>
+        </div>
+      </div>
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      <script src="https://use.fontawesome.com/14eeaa5338.js"></script>
+    </body>
+</html>

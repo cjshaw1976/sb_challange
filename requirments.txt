@@ -1,0 +1,6 @@
+Django==1.11.7
+djangorestframework==3.7.3
+olefile==0.44
+Pillow==4.3.0
+pytz==2017.3
+validate-email==1.3
