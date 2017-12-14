@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Steward Bank freelancer project</title>
-        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="{% static "css/style.css" %}">
+      <title>Steward Bank freelancer project</title>
+      <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+      <link rel="stylesheet" type="text/css" href="{% static "css/style.css" %}">
     </head>
     <body>
       <nav class="navbar navbar-default">
@@ -18,26 +18,26 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="{% url 'home' %}">Micro Blog</a>
+            <a class="navbar-brand" href="{% url 'home' %}">Steward Bank Freelancer Project</a>
           </div>
 
           <!-- Collect the nav links, forms, and other content for toggling -->
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-              {% url 'home' as home_path %}
-              {% url 'home' as home_path %}
+              {% url 'list_accounts' as list_path %}
+              {% url 'new_account' as new_path %}
+              
               {% if user.is_authenticated %}
-              <li{% if home_path == request.path %} class="active"{% endif %}><a href="{% url 'home' %}">My Feed{% if home_path == request.path %}<span class="sr-only"> (current)</span>{% endif %}</a></li>
-              <li{% if home_path == request.path %} class="active"{% endif %}><a href="{% url 'home' %}">Post{% if home_path == request.path %}<span class="sr-only"> (current)</span>{% endif %}</a></li>
+              <li{% if list_path == request.path %} class="active"{% endif %}><a href="{% url 'list_accounts' %}">All Accounts{% if list_path == request.path %}<span class="sr-only"> (current)</span>{% endif %}</a></li>
+              <li{% if new_path == request.path %} class="active"{% endif %}><a href="{% url 'new_account' %}">New Account{% if new_path == request.path %}<span class="sr-only"> (current)</span>{% endif %}</a></li>
               {% endif %}
             </ul>
             <ul class="nav navbar-nav navbar-right">
-              <li><a href="{% url 'new_account' %}">New Account</a></li>
               {% if user.is_authenticated %}
-              <li><a href="{% url 'home' %}">Log Out</a></li>
+              <li><a href="{% url 'staff_logout' %}">Log Out</a></li>
               {% else %}
               <li><a href="{% url 'home' %}">Sign Up</a></li>
-              <li><a href="{% url 'home' %}">Log In</a></li>
+              <li><a href="{% url 'staff_login' %}">Log In</a></li>
               {% endif %}
             </ul>
           </div><!-- /.navbar-collapse -->
@@ -51,23 +51,24 @@
           </div>
           <div class="col-lg-4">
             <h1>Steward Bank Freelancer Project</h1>
-            <p>This Django project collect, stores and displays current and historic data foreign exchange rates published by the European Central Bank for a selected basket of currencies. Currencies can be converted at historic rates and a chart displays the rates between two currencies for a selected period.</p>
-            <p><b>Collecting Data.</b></br>Rates are collected from the api ‘https://api.fixer.io/’, using coreapi. A dataset consisting of the date and selected currencies are saved into the sqlite database.</p>
-            <p><b>Displaying a chart.</b></br>The django-jchart app is used to effectively and quickly render charts. You may view charts of rates for any two currencies between any two dates. The charts are called asynchronously so there is no need to refresh the page.</p>
-            <p><b>Displaying a rate calculation.</b></br>An amount may be converted from one currency to another at the current date or a historic date. Again this is done asynchronously so the calculation is displayed without refreshing the page.</p>
+            <p></p>
+            <p><b></b></br></p>
+            <p><b></b></br></p>
+            <p><b></b></br></p>
             <p><b>Skills utilized.</b></p>
             <p><b>Backend:</b>
               <ul>
                 <li>Python 3.6</li>
                 <li>Django 1.11.7</li>
-                <li>coreapi</li>
+                <li>django-forms-bootstrap</li>
+                <li>djangorestframework</li>
               </ul>
 
               <b>Frontend:</b>
               <ul>
                 <li>JQuery 3.1</li>
                 <li>Bootstrap 3.3</li>
-                <li>Chart.js 2.4</li>
+                <li>Bootstrap Validator</li>
               </ul></p>
 
           </div>

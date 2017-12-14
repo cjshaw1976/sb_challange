@@ -5,9 +5,32 @@
 {% block content %}
 <h1>New Account</h1>
 <p>All fields are required</p>
-<form method="POST" class="post-form" data-toggle="validator" enctype="multipart/form-data">
+<form id="edit_account" method="POST" class="post-form" data-toggle="validator" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form|as_bootstrap }}
     <button type="submit" class="save btn btn-default">Save</button>
 </form>
+
+
+<script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", function(event) {
+
+    // On submit makesure the files are either jpg or pdf
+    $('#edit_account').validator().on('submit', function (e) {
+      $( "input:file" ).removeClass(' has-error has-danger');
+
+      // Loop each input and make sure right extension
+      $.each( $( "input:file" ), function(i, l) {
+        if (!l.value.endsWith('.jpg') && !l.value.endsWith('.pdf')) {
+          e.preventDefault();
+          $(this).addClass(' has-error has-danger');
+
+          // Add error span after input
+          // <span class="error-msg">File must be either type, .jpg or .pdf</span>
+        }
+      });
+    });
+
+  });
+</script>
 {% endblock %}

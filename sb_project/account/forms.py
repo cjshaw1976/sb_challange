@@ -1,7 +1,6 @@
 from django import forms
 
 from django.core.exceptions import ValidationError
-# from django.utils.image import Image
 
 from .models import Customer
 
@@ -9,6 +8,11 @@ import re
 
 
 class AccountForm(forms.ModelForm):
+    VALID_IMAGE_EXTENSIONS = [
+        ".jpg",
+        ".pdf",
+    ]
+
     def clean_id_number(self):
         # Check id number is valid format
         # 2 digits, optional space or minus, 6 or 7 digits, one letter, 2 digits
@@ -22,17 +26,38 @@ class AccountForm(forms.ModelForm):
         return data
 
     def clean_headshot_image(self):
-        # Check that images are included and in jpg format
-        data = self.cleaned_data.get(['headshot_image'])
+        # Check that images are included and have either jpg or pdf extension
+        data = self.cleaned_data['headshot_image']
 
         if data:
-            return data
-#            format = Image.open(data.file).format
-#            data.file.seek(0)
-#            if format in ['jpeg',]:
-#                return data
+            if any([data.name.endswith(e) for e in self.VALID_IMAGE_EXTENSIONS]):
+                return data
 
-        raise forms.ValidationError("Image must be in .jpg format")
+        raise ValidationError("Image must have .jpg or .pdf extension")
+        return data
+
+
+    def clean_residence_image(self):
+        # Check that images are included and have either jpg or pdf extension
+        data = self.cleaned_data['residence_image']
+
+        if data:
+            if any([data.name.endswith(e) for e in self.VALID_IMAGE_EXTENSIONS]):
+                return data
+
+        raise ValidationError("Image must have .jpg or .pdf extension")
+        return data
+
+
+    def clean_signature_image(self):
+        # Check that images are included and have either jpg or pdf extension
+        data = self.cleaned_data['signature_image']
+
+        if data:
+            if any([data.name.endswith(e) for e in self.VALID_IMAGE_EXTENSIONS]):
+                return data
+
+        raise ValidationError("Image must have .jpg or .pdf extension")
         return data
 
 
