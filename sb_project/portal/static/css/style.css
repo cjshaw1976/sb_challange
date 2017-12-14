@@ -1,0 +1,8 @@
+input[type="file"] {
+    border: 0px;
+    background-color: transparent;
+    box-shadow: unset;
+    -webkit-box-shadow: unset;
+    height: 1.89em;
+    padding: 0;
+}

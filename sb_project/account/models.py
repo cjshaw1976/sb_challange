@@ -7,7 +7,7 @@ def user_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/customer_<id>/<filename>
     return 'customer_{0}/{1}'.format(instance.customer.id, filename)
 
-class customer(models.Model):
+class Customer(models.Model):
     user_name = models.CharField(max_length=16)
     first_name = models.CharField(max_length=16)
     last_name = models.CharField(max_length=16)

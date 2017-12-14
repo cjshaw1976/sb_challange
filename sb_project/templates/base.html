@@ -32,6 +32,7 @@
               {% endif %}
             </ul>
             <ul class="nav navbar-nav navbar-right">
+              <li><a href="{% url 'new_account' %}">New Account</a></li>
               {% if user.is_authenticated %}
               <li><a href="{% url 'home' %}">Log Out</a></li>
               {% else %}
@@ -75,6 +76,7 @@
 
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.9/validator.min.js"></script>
       <script src="https://use.fontawesome.com/14eeaa5338.js"></script>
     </body>
 </html>
