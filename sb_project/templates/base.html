@@ -25,18 +25,18 @@
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
               {% url 'home' as home_path %}
-              {% url 'post' as home_path %}
+              {% url 'home' as home_path %}
               {% if user.is_authenticated %}
               <li{% if home_path == request.path %} class="active"{% endif %}><a href="{% url 'home' %}">My Feed{% if home_path == request.path %}<span class="sr-only"> (current)</span>{% endif %}</a></li>
-              <li{% if home_path == request.path %} class="active"{% endif %}><a href="{% url 'new_post' %}">Post{% if home_path == request.path %}<span class="sr-only"> (current)</span>{% endif %}</a></li>
+              <li{% if home_path == request.path %} class="active"{% endif %}><a href="{% url 'home' %}">Post{% if home_path == request.path %}<span class="sr-only"> (current)</span>{% endif %}</a></li>
               {% endif %}
             </ul>
             <ul class="nav navbar-nav navbar-right">
               {% if user.is_authenticated %}
-              <li><a href="{% url 'user_logout' %}">Log Out</a></li>
+              <li><a href="{% url 'home' %}">Log Out</a></li>
               {% else %}
-              <li><a href="{% url 'user_new' %}">Sign Up</a></li>
-              <li><a href="{% url 'user_login' %}">Log In</a></li>
+              <li><a href="{% url 'home' %}">Sign Up</a></li>
+              <li><a href="{% url 'home' %}">Log In</a></li>
               {% endif %}
             </ul>
           </div><!-- /.navbar-collapse -->
