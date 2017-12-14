@@ -25,7 +25,7 @@ SECRET_KEY = '@)68ge^15vx2hl@@0$2f*3+vukyku-@k9&9&#+mo(ybz-#nq#7'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1', '192.168.0.248']
 
 
 # Application definition
@@ -121,3 +121,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+# Location(s) for django to look for static file during dev. Files here will
+# be copied to STATIC_ROOT when running collectstatic
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "portal/static"),
+]
+
+# Location where collect static will pace file for hosting.
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

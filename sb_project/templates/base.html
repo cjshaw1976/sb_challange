@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Micro Blog</title>
+        <title>Steward Bank freelancer project</title>
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="{% static "css/style.css" %}">
     </head>
@@ -49,7 +49,7 @@
               {% endblock %}
           </div>
           <div class="col-lg-4">
-            <h1>Micro Blog Project</h1>
+            <h1>Steward Bank Freelancer Project</h1>
             <p>This Django project collect, stores and displays current and historic data foreign exchange rates published by the European Central Bank for a selected basket of currencies. Currencies can be converted at historic rates and a chart displays the rates between two currencies for a selected period.</p>
             <p><b>Collecting Data.</b></br>Rates are collected from the api ‘https://api.fixer.io/’, using coreapi. A dataset consisting of the date and selected currencies are saved into the sqlite database.</p>
             <p><b>Displaying a chart.</b></br>The django-jchart app is used to effectively and quickly render charts. You may view charts of rates for any two currencies between any two dates. The charts are called asynchronously so there is no need to refresh the page.</p>
