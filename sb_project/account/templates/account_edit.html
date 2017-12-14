@@ -5,7 +5,7 @@
 {% block content %}
 <h1>New Account</h1>
 <p>All fields are required</p>
-<form method="POST" class="post-form" data-toggle="validator">
+<form method="POST" class="post-form" data-toggle="validator" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form|as_bootstrap }}
     <button type="submit" class="save btn btn-default">Save</button>
