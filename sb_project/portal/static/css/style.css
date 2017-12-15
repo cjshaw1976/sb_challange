@@ -14,3 +14,10 @@ input[type="file"] {
   min-height: 2em;
   border-bottom: solid 1px lightgray;
 }
+
+.content-label {
+  font-size: x-small;
+  font-weight: bold;
+  color: grey;
+  padding-right: 0;
+}
