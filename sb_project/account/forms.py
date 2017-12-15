@@ -6,6 +6,7 @@ from .models import Customer
 
 import re
 
+# Todo customer must be 16 years or older
 
 class AccountForm(forms.ModelForm):
     VALID_IMAGE_EXTENSIONS = [

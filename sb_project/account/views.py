@@ -1,5 +1,5 @@
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 from .forms import AccountForm
 from .models import Customer
@@ -38,7 +38,8 @@ def newAccount(request):
 
 # View a customer account
 def viewAccount(request, user_name):
-    return render(request, 'start.html', {})
+    customer = get_object_or_404(Customer, user_name=user_name)
+    return render(request, 'account_view.html', {'customer': customer})
 
 
 # Edit a customer account
