@@ -26,7 +26,7 @@
             <ul class="nav navbar-nav">
               {% url 'list_accounts' as list_path %}
               {% url 'new_account' as new_path %}
-              
+
               {% if user.is_authenticated %}
               <li{% if list_path == request.path %} class="active"{% endif %}><a href="{% url 'list_accounts' %}">All Accounts{% if list_path == request.path %}<span class="sr-only"> (current)</span>{% endif %}</a></li>
               <li{% if new_path == request.path %} class="active"{% endif %}><a href="{% url 'new_account' %}">New Account{% if new_path == request.path %}<span class="sr-only"> (current)</span>{% endif %}</a></li>
@@ -36,8 +36,8 @@
               {% if user.is_authenticated %}
               <li><a href="{% url 'staff_logout' %}">Log Out</a></li>
               {% else %}
-              <li><a href="{% url 'home' %}">Sign Up</a></li>
-              <li><a href="{% url 'staff_login' %}">Log In</a></li>
+              <li><a href="{% url 'customer_login' %}">Customer Login</a></li>
+              <li><a href="{% url 'staff_login' %}">Staff Log In</a></li>
               {% endif %}
             </ul>
           </div><!-- /.navbar-collapse -->
