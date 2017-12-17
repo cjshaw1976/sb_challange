@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 
 from .models import Customer
 
-from datetime import datetime, timedelta
+from datetime import datetime, date
 import re
 
 # Todo customer must be 16 years or older
@@ -16,6 +16,7 @@ class AccountForm(forms.ModelForm):
     ]
 
     password = forms.CharField(widget=forms.PasswordInput)
+    birth_date = forms.DateField(widget = forms.SelectDateWidget(years=range(1950, 2020)))
 
     def clean_password(self):
         # Check password is valid format
@@ -45,11 +46,12 @@ class AccountForm(forms.ModelForm):
     def clean_birth_date(self):
         # Check that person is 16 years or older
         now = datetime.now()
-        ago = datetime(now.year - 16, now.month, now.day)
+        ago = date(now.year - 16, now.month, now.day)
+
         data = self.cleaned_data['birth_date']
 
-        # if datetime(birthdate) > ago
-        # raise ValidationError('Account Holder must be atleast 16 years old')
+        if data > ago:
+            raise ValidationError('Account Holder must be atleast 16 years old')
         return data
 
 

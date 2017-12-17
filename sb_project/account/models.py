@@ -13,7 +13,7 @@ class Customer(models.Model):
     first_name = models.CharField(max_length=16)
     last_name = models.CharField(max_length=16)
     id_number = models.CharField(max_length=16)
-    birth_date = models.DateField()
+    birth_date = models.DateField(blank=True, null=True)
     phone_number = models.CharField(max_length=16)
     email_address = models.EmailField()
     physical_address = models.TextField(max_length=128)

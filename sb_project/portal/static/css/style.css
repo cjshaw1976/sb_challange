@@ -1,3 +1,10 @@
+/* Make date input inline */
+#div_id_birth_date .form-control {
+    display: inline-block;
+    width: initial;
+}
+
+/* Make the file imputs not have the default bookstrap style for inputs, yuck */
 input[type="file"] {
     border: 0px;
     background-color: transparent;
