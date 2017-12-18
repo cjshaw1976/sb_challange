@@ -6,12 +6,17 @@ from account.models import Customer, CustomerSession
 from django.contrib.sessions.models import Session
 
 from datetime import datetime
+from django.utils import timezone
 import pytz
 
 def home(request):
     return render(request, 'home.html', {})
 
 def customer_home(request):
+    # Redirect if not logged in
+    if not 'user_name' in request.session:
+        return redirect('home')
+
     # Set the session to automatically expire in 5 minutes
     request.session.set_expiry(300)
     return render(request, 'home.html', {})
@@ -41,7 +46,7 @@ def customer_login(request):
                 logged_in = CustomerSession.objects.filter(customer=customer).first()
 
                 # If the customer is logged in and the session has not expired
-                if logged_in and datetime.now(tz=pytz.utc) < logged_in.session.expire_date:
+                if logged_in and timezone.now() < logged_in.session.expire_date:
 
                     print(Session.objects.get(pk=logged_in.session))
                     #error already logged in
@@ -55,7 +60,7 @@ def customer_login(request):
                                     )
                 else:
                     # Delete any expired sessions
-                    if logged_in and datetime.now(tz=pytz.utc) > logged_in.session.expire_date:
+                    if logged_in and timezone.now() > logged_in.session.expire_date:
                         logged_in.session.delete()
 
                     # Start a session

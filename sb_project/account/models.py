@@ -1,8 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.sessions.models import Session
-
-from datetime import datetime
+from django.utils import timezone
+import pytz
 
 def user_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/customer_<user_name>/<filename>
@@ -25,12 +25,12 @@ class Customer(models.Model):
     signature_image = models.FileField('Customer Signature',
                               upload_to=user_directory_path)
     created_by = models.ForeignKey(User, related_name='customers')
-    created_date = models.DateTimeField(default=datetime.now, blank=True)
+    created_date = models.DateTimeField(default=timezone.now, blank=True)
 
 
 class CustomerSession(models.Model):
     customer = models.OneToOneField(Customer)
     session = models.ForeignKey(Session)
-    start_time = models.DateTimeField(default=datetime.now, blank=True)
+    start_time = models.DateTimeField(default=timezone.now, blank=True)
     ip = models.GenericIPAddressField()
     agent = models.TextField(max_length=512)

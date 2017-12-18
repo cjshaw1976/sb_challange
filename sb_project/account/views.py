@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, redirect, get_object_or_404
 
@@ -5,6 +6,7 @@ from .forms import AccountForm
 from .models import Customer
 
 # List all customers accounts
+@login_required
 def listAccounts(request):
     customer_list = Customer.objects.order_by('user_name')
     page = request.GET.get('page', 1)
@@ -22,6 +24,7 @@ def listAccounts(request):
 
 
 # Create a new customer account
+@login_required
 def newAccount(request):
     form = AccountForm()
     if request.method == "POST":
@@ -37,11 +40,13 @@ def newAccount(request):
 
 
 # View a customer account
+@login_required
 def viewAccount(request, user_name):
     customer = get_object_or_404(Customer, user_name=user_name)
     return render(request, 'account_view.html', {'customer': customer})
 
 
 # Edit a customer account
+@login_required
 def editAccount(request, user_name):
     return render(request, 'start.html', {})

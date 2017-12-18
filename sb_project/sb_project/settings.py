@@ -135,6 +135,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Login / out
+LOGIN_URL='staff_login'
 LOGIN_REDIRECT_URL = 'list_accounts'
 
 # sessions
