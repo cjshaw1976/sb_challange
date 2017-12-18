@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.sessions.models import Session
 
 from datetime import datetime
 
@@ -25,3 +26,11 @@ class Customer(models.Model):
                               upload_to=user_directory_path)
     created_by = models.ForeignKey(User, related_name='customers')
     created_date = models.DateTimeField(default=datetime.now, blank=True)
+
+
+class CustomerSession(models.Model):
+    customer = models.OneToOneField(Customer)
+    session = models.ForeignKey(Session)
+    start_time = models.DateTimeField(default=datetime.now, blank=True)
+    ip = models.GenericIPAddressField()
+    agent = models.TextField(max_length=512)
