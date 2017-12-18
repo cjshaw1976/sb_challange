@@ -32,9 +32,9 @@
               <li{% if new_path == request.path %} class="active"{% endif %}><a href="{% url 'new_account' %}">New Account{% if new_path == request.path %}<span class="sr-only"> (current)</span>{% endif %}</a></li>
               {% endif %}
             </ul>
-            <ul class="nav navbar-nav nabar-right">
+            <ul class="nav navbar-nav navbar-right">
               {% if request.session.user_name %}
-                <li>Welcome {{ request.session.user_name}}</li>
+                <li><a href="{% url 'customer_home' %}">{{ request.session.display_name}}</a></li>
                 <li><a href="{% url 'customer_logout' %}">Log Out</a></li>
               {% else %}
                 {% if user.is_authenticated %}

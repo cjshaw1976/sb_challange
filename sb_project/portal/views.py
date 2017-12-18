@@ -5,7 +5,15 @@ from account.models import Customer, CustomerSession
 
 from django.contrib.sessions.models import Session
 
+from datetime import datetime
+import pytz
+
 def home(request):
+    return render(request, 'home.html', {})
+
+def customer_home(request):
+    # Set the session to automatically expire in 5 minutes
+    request.session.set_expiry(300)
     return render(request, 'home.html', {})
 
 def customer_logout(request):
@@ -30,17 +38,26 @@ def customer_login(request):
 
             if customer:
                 # Check user is not yet logged in
-                logged_in = CustomerSession.objects.filter(customer=customer)
-                if logged_in:
+                logged_in = CustomerSession.objects.filter(customer=customer).first()
+
+                # If the customer is logged in and the session has not expired
+                if logged_in and datetime.now(tz=pytz.utc) < logged_in.session.expire_date:
+
+                    print(Session.objects.get(pk=logged_in.session))
                     #error already logged in
                     form.add_error(None,
-                                   '{} {} is already logged in. IP: {}, Agent: {}'.format(
+                                   "Customer '{} {}' is already logged in. Timestamp: {}. IP: {}. Agent: {}.".format(
                                         customer.first_name,
                                         customer.last_name,
+                                        logged_in.start_time,
                                         logged_in.ip,
                                         logged_in.agent)
                                     )
                 else:
+                    # Delete any expired sessions
+                    if logged_in and datetime.now(tz=pytz.utc) > logged_in.session.expire_date:
+                        logged_in.session.delete()
+
                     # Start a session
                     if not request.session.session_key:
                         request.session.create()
@@ -64,9 +81,10 @@ def customer_login(request):
 
                     # Set session Variable
                     request.session['user_name'] = customer.user_name
+                    request.session['display_name'] = '{} {}'.format(customer.first_name, customer.last_name)
 
                     # Redirect to home
-                    return redirect('home')
+                    return redirect('customer_home')
 
             else:
                 # create error message if invalid
