@@ -7,11 +7,10 @@ from .models import Customer
 from datetime import datetime, date
 import re
 
-# Todo customer must be 16 years or older
-
 class AccountForm(forms.ModelForm):
     VALID_IMAGE_EXTENSIONS = [
         ".jpg",
+        ".png",
         ".pdf",
     ]
 
@@ -63,7 +62,7 @@ class AccountForm(forms.ModelForm):
             if any([data.name.endswith(e) for e in self.VALID_IMAGE_EXTENSIONS]):
                 return data
 
-        raise ValidationError("Image must have .jpg or .pdf extension")
+        raise ValidationError("Image must have .jpg, .png or .pdf extension")
         return data
 
 
@@ -75,7 +74,7 @@ class AccountForm(forms.ModelForm):
             if any([data.name.endswith(e) for e in self.VALID_IMAGE_EXTENSIONS]):
                 return data
 
-        raise ValidationError("Image must have .jpg or .pdf extension")
+        raise ValidationError("Image must have .jpg, .png or .pdf extension")
         return data
 
 
@@ -87,7 +86,7 @@ class AccountForm(forms.ModelForm):
             if any([data.name.endswith(e) for e in self.VALID_IMAGE_EXTENSIONS]):
                 return data
 
-        raise ValidationError("Image must have .jpg or .pdf extension")
+        raise ValidationError("Image must have .jpg, .png or .pdf extension")
         return data
 
 
