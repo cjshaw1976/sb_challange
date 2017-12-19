@@ -5,6 +5,19 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import AccountForm
 from .models import Customer
 
+from twilio.rest import Client
+from twilio.base.exceptions import TwilioRestException
+
+"""
+I am using a free account with no credit, so it not actually going to send
+an SMS, otherwise putting these detail publically on github is a bad idea.
+"""
+
+# Your Account SID from twilio.com/console
+account_sid = "AC819e285399a13897370bcc8f7f160ffa"
+# Your Auth Token from twilio.com/console
+auth_token  = "c516d4d8c58b54da9422271521fa2a81"
+
 # List all customers accounts
 @login_required
 def listAccounts(request):
@@ -33,7 +46,19 @@ def newAccount(request):
             account = form.save(commit=False)
             account.created_by = request.user
             account.save()
-            # Todo, send sms here
+
+            # Send SMS
+            try:
+                client = Client(account_sid, auth_token)
+                message = client.messages.create(
+                    to=form.cleaned_data['phone_number'],
+                    from_="+13345642095",
+                    body="Your SB account {} has been opened.".format(account.pk))
+                print(message.sid)
+
+            except TwilioRestException as e:
+                print(e)
+
             return redirect('view_account', user_name=account.user_name)
 
     return render(request, 'account_edit.html', {'form': form})

@@ -42,6 +42,19 @@ class AccountForm(forms.ModelForm):
         # Remember to always return the cleaned data.
         return data
 
+    def clean_phone_number(self):
+        # Check matchs zim cell phone format
+        data = self.cleaned_data['phone_number']
+
+        # Remove spaces and special characters
+        data = re.sub('[^\d\+]', '', data)
+
+        #  Match format +2637********
+        if not re.match("^\+2637\d{8}$", data):
+            raise ValidationError('Phone number must be in the format +2637********')
+
+        return data
+
     def clean_birth_date(self):
         # Check that person is 16 years or older
         now = datetime.now()
@@ -51,6 +64,7 @@ class AccountForm(forms.ModelForm):
 
         if data > ago:
             raise ValidationError('Account Holder must be atleast 16 years old')
+            
         return data
 
 
