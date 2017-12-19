@@ -140,3 +140,15 @@ LOGIN_REDIRECT_URL = 'list_accounts'
 
 # sessions
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+# Messages in bootstrap format
+# https://simpleisbetterthancomplex.com/tips/2016/09/06/django-tip-14-messages-framework.html
+from django.contrib.messages import constants as messages
+
+MESSAGE_TAGS = {
+    messages.DEBUG: 'alert-info',
+    messages.INFO: 'alert-info',
+    messages.SUCCESS: 'alert-success',
+    messages.WARNING: 'alert-warning',
+    messages.ERROR: 'alert-danger',
+}

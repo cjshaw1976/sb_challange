@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, redirect, get_object_or_404
@@ -47,6 +48,8 @@ def newAccount(request):
             account.created_by = request.user
             account.save()
 
+            messages.success(request, 'Account for {} {} has been successfully created!'.format(account.first_name, account.last_name))
+
             # Send SMS
             try:
                 client = Client(account_sid, auth_token)
@@ -54,10 +57,11 @@ def newAccount(request):
                     to=form.cleaned_data['phone_number'],
                     from_="+13345642095",
                     body="Your SB account {} has been opened.".format(account.pk))
-                print(message.sid)
+                messages.success(request, 'SMS sent to {} successfully!'.format(form.cleaned_data['phone_number']))
 
             except TwilioRestException as e:
                 print(e)
+                messages.warning(request, 'SMS sent to {} Failed! Please see error console.'.format(form.cleaned_data['phone_number']))
 
             return redirect('view_account', user_name=account.user_name)
 

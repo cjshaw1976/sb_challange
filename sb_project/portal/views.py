@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.shortcuts import render, redirect
 
 from .forms import AccountForm
@@ -24,6 +25,7 @@ def customer_home(request):
 def customer_logout(request):
     if 'user_name' in request.session:
         # Delete session from db
+        messages.info(request, 'User {} logged out.'.format(request.session['display_name']))
         customer_sessions = CustomerSession.objects.filter(customer__user_name=request.session['user_name'])
         for customer_session in customer_sessions:
             customer_session.session.delete()
@@ -61,7 +63,9 @@ def customer_login(request):
                 else:
                     # Delete any expired sessions
                     if logged_in and timezone.now() > logged_in.session.expire_date:
+                        messages.info(request, 'User {} logged out due to period of inactivity.'.format(request.session['display_name']))
                         logged_in.session.delete()
+
 
                     # Start a session
                     if not request.session.session_key:
