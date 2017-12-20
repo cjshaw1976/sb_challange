@@ -5,6 +5,39 @@
 
 {% block content %}
 <h1>Backend</h1>
+<hr>
+<div class="form-inline">
+  <div class="form-group"> <!-- Message input !-->
+    <label class="control-label " for="severity_id">Severity</label>
+    <select class="form-control" id="severity_id" name="severity">
+      <option value="" {% if not request.GET.severity  %}selected{% endif %}>All</option>
+      <option value="SUCCESS" {% if request.GET.severity|lower == 'success' %}selected{% endif %}>Success</option>
+      <option value="INFO" {% if request.GET.severity|lower == 'info' %}selected{% endif %}>Info</option>
+      <option value="WARNING" {% if request.GET.severity|lower == 'warning' %}selected{% endif %}>Warning</option>
+      <option value="DANGER" {% if request.GET.severity|lower == 'danger' %}selected{% endif %}>Danger</option>
+    </select>
+  </div>
+  <div class="form-group"> <!-- Message input !-->
+    <label class="control-label " for="customer_id">Customer</label>
+    <select class="form-control" id="customer_id" name="customer">
+      <option value="" {% if not request.GET.customer  %}selected{% endif %}>All</option>
+      {% for customer in customers %}
+        <option value="{{ customer.user_name }}" {% if request.GET.customer == customer.user_name %}selected{% endif %}>{{ customer.last_name }}, {{ customer.first_name }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="form-group"> <!-- Message input !-->
+    <label class="control-label " for="staff_id">User</label>
+    <select class="form-control" id="staff_id" name="staff">
+      <option value="" {% if not request.GET.staff  %}selected{% endif %}>All</option>
+      {% for staff in users %}
+        <option value="{{ staff.username }}" {% if request.GET.staff == staff.username %}selected{% endif %}>{{ staff.last_name }} {{ staff.first_name }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <button id="show" type="submit" class="btn btn-primary">Show</button>
+</div>
+<hr>
 <div class="table-responsive">
   <table class="table table-hover">
     <thead>
@@ -30,7 +63,7 @@
 {% if log.has_other_pages %}
   <ul class="pagination">
     {% if log.has_previous %}
-      <li><a href="?page={{ log.previous_page_number }}">&laquo;</a></li>
+      <li><a href="?page={{ log.previous_page_number }}{% if request.GET.severity  %}&severity={{ request.GET.severity }}{% endif %}{% if request.GET.customer  %}&customer={{ request.GET.customer }}{% endif %}{% if request.GET.staff  %}&staff={{ request.GET.staff }}{% endif %}">&laquo;</a></li>
     {% else %}
       <li class="disabled"><span>&laquo;</span></li>
     {% endif %}
@@ -38,15 +71,22 @@
       {% if log.number == i %}
         <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
       {% else %}
-        <li><a href="?page={{ i }}">{{ i }}</a></li>
+        <li><a href="?page={{ i }}{% if request.GET.severity  %}&severity={{ request.GET.severity }}{% endif %}{% if request.GET.customer  %}&customer={{ request.GET.customer }}{% endif %}{% if request.GET.staff  %}&staff={{ request.GET.staff }}{% endif %}">{{ i }}</a></li>
       {% endif %}
     {% endfor %}
     {% if log.has_next %}
-      <li><a href="?page={{ log.next_page_number }}">&raquo;</a></li>
+      <li><a href="?page={{ log.next_page_number }}{% if request.GET.severity  %}&severity={{ request.GET.severity }}{% endif %}{% if request.GET.customer  %}&customer={{ request.GET.customer }}{% endif %}{% if request.GET.staff  %}&staff={{ request.GET.staff }}{% endif %}">&raquo;</a></li>
     {% else %}
       <li class="disabled"><span>&raquo;</span></li>
     {% endif %}
   </ul>
 {% endif %}
 
+<script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", function(event) {
+    $('#show').on('click', function () {
+      window.location.href='?severity='+$( "#severity_id" ).val()+'&customer='+$( "#customer_id" ).val()+'&staff='+$( "#staff_id" ).val();
+    });
+  });
+</script>
 {% endblock %}
