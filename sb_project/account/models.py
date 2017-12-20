@@ -34,3 +34,23 @@ class CustomerSession(models.Model):
     start_time = models.DateTimeField(default=timezone.now, blank=True)
     ip = models.GenericIPAddressField()
     agent = models.TextField(max_length=512)
+
+
+class AccessLog(models.Model):
+    SUCCESS = 'SUCCESS' # Greeen
+    INFO = 'INFO'       # Blue
+    WARN = 'WARN'       # Orange
+    ERROR = 'ERROR'     # Red
+
+    LEVEL_CHOICES = (
+        (SUCCESS, 'success'),
+        (INFO, 'info'),
+        (WARN, 'warn'),
+        (ERROR, 'error'),
+    )
+    
+    timestamp = models.DateTimeField(default=timezone.now, blank=True)
+    level = models.CharField(max_length=10, choices=LEVEL_CHOICES, default=SUCCESS)
+    user = models.ForeignKey(User, related_name='accesslog', blank=True)
+    customer = models.ForeignKey(Customer, related_name='accesslog', blank=True)
+    notes  = models.TextField(max_length=256)

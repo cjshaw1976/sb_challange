@@ -26,6 +26,7 @@ def customer_logout(request):
     if 'user_name' in request.session:
         # Delete session from db
         messages.info(request, 'User {} logged out.'.format(request.session['display_name']))
+        # log db here
         customer_sessions = CustomerSession.objects.filter(customer__user_name=request.session['user_name'])
         for customer_session in customer_sessions:
             customer_session.session.delete()
@@ -52,6 +53,7 @@ def customer_login(request):
 
                     print(Session.objects.get(pk=logged_in.session))
                     #error already logged in
+                    # log db here
                     form.add_error(None,
                                    "Customer '{} {}' is already logged in. Timestamp: {}. IP: {}. Agent: {}.".format(
                                         customer.first_name,
@@ -63,6 +65,7 @@ def customer_login(request):
                 else:
                     # Delete any expired sessions
                     if logged_in and timezone.now() > logged_in.session.expire_date:
+                        # log db here
                         messages.info(request, 'User {} logged out due to period of inactivity.'.format(request.session['display_name']))
                         logged_in.session.delete()
 
@@ -86,7 +89,9 @@ def customer_login(request):
                         ip=ip,
                         agent=request.META.get('HTTP_USER_AGENT')
                     )
+
                     log_in.save()
+                        # log db here
 
                     # Set session Variable
                     request.session['user_name'] = customer.user_name
@@ -97,6 +102,7 @@ def customer_login(request):
 
             else:
                 # create error message if invalid
+                # log db here
                 form.add_error(None, 'Invalid username and password combination.')
 
     return render(request, 'customer_login.html', { 'form': form })

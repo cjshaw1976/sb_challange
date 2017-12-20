@@ -26,10 +26,12 @@
             <ul class="nav navbar-nav">
               {% url 'list_accounts' as list_path %}
               {% url 'new_account' as new_path %}
+              {% url 'backend' as back_path %}
 
               {% if user.is_authenticated %}
               <li{% if list_path == request.path %} class="active"{% endif %}><a href="{% url 'list_accounts' %}">All Accounts{% if list_path == request.path %}<span class="sr-only"> (current)</span>{% endif %}</a></li>
               <li{% if new_path == request.path %} class="active"{% endif %}><a href="{% url 'new_account' %}">New Account{% if new_path == request.path %}<span class="sr-only"> (current)</span>{% endif %}</a></li>
+              <li{% if back_path == request.path %} class="active"{% endif %}><a href="{% url 'backend' %}">Backend{% if back_path == request.path %}<span class="sr-only"> (current)</span>{% endif %}</a></li>
               {% endif %}
             </ul>
             <ul class="nav navbar-nav navbar-right">
