@@ -27,6 +27,9 @@ class Customer(models.Model):
     created_by = models.ForeignKey(User, related_name='customers')
     created_date = models.DateTimeField(default=timezone.now, blank=True)
 
+    def __str__(self):
+        return self.user_name
+
 
 class CustomerSession(models.Model):
     customer = models.OneToOneField(Customer)
@@ -35,22 +38,25 @@ class CustomerSession(models.Model):
     ip = models.GenericIPAddressField()
     agent = models.TextField(max_length=512)
 
+    def __str__(self):
+        return self.customer
+
 
 class AccessLog(models.Model):
     SUCCESS = 'SUCCESS' # Greeen
     INFO = 'INFO'       # Blue
-    WARN = 'WARN'       # Orange
-    ERROR = 'ERROR'     # Red
+    WARNING = 'WARNING'       # Orange
+    DANGER = 'DANGER'     # Red
 
     LEVEL_CHOICES = (
         (SUCCESS, 'success'),
         (INFO, 'info'),
-        (WARN, 'warn'),
-        (ERROR, 'error'),
+        (WARNING, 'warning'),
+        (DANGER, 'danger'),
     )
-    
+
     timestamp = models.DateTimeField(default=timezone.now, blank=True)
     level = models.CharField(max_length=10, choices=LEVEL_CHOICES, default=SUCCESS)
-    user = models.ForeignKey(User, related_name='accesslog', blank=True)
-    customer = models.ForeignKey(Customer, related_name='accesslog', blank=True)
+    user = models.ForeignKey(User, related_name='accesslog',null=True, blank=True)
+    customer = models.ForeignKey(Customer, related_name='accesslog',null=True, blank=True)
     notes  = models.TextField(max_length=256)

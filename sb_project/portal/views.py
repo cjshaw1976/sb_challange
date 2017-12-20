@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 
 from .forms import AccountForm
-from account.models import Customer, CustomerSession
+from account.models import Customer, CustomerSession, AccessLog
 
 from django.contrib.sessions.models import Session
 
@@ -26,7 +26,9 @@ def customer_logout(request):
     if 'user_name' in request.session:
         # Delete session from db
         messages.info(request, 'User {} logged out.'.format(request.session['display_name']))
-        # log db here
+        AccessLog.objects.create(customer=Customer.objects.get(user_name=request.session['user_name']),
+                                 level=AccessLog.SUCCESS,
+                                 notes="Logged out")
         customer_sessions = CustomerSession.objects.filter(customer__user_name=request.session['user_name'])
         for customer_session in customer_sessions:
             customer_session.session.delete()
@@ -38,6 +40,11 @@ def customer_login(request):
     if request.method == "POST":
         form = AccountForm(request.POST)
         if form.is_valid():
+            # Get the request IP
+            ip = request.META.get('HTTP_X_FORWARDED_FOR')
+            if ip == None:
+                ip = request.META.get('REMOTE_ADDR')
+
             # Check username and password match
             customer = Customer.objects.filter(
                 user_name=form.cleaned_data['user_name'],
@@ -51,9 +58,11 @@ def customer_login(request):
                 # If the customer is logged in and the session has not expired
                 if logged_in and timezone.now() < logged_in.session.expire_date:
 
-                    print(Session.objects.get(pk=logged_in.session))
+                    print("{} {} {}".format(Session.objects.get(pk=logged_in.session), timezone.now(), logged_in.session.expire_date))
                     #error already logged in
-                    # log db here
+                    AccessLog.objects.create(customer=customer,
+                                             level=AccessLog.WARN,
+                                             notes="Customer {} already logged in.".format(customer.user_name))
                     form.add_error(None,
                                    "Customer '{} {}' is already logged in. Timestamp: {}. IP: {}. Agent: {}.".format(
                                         customer.first_name,
@@ -65,7 +74,9 @@ def customer_login(request):
                 else:
                     # Delete any expired sessions
                     if logged_in and timezone.now() > logged_in.session.expire_date:
-                        # log db here
+                        AccessLog.objects.create(customer=customer,
+                                                 level=AccessLog.INFO,
+                                                 notes="Logged out due to inactivity.")
                         messages.info(request, 'User {} logged out due to period of inactivity.'.format(request.session['display_name']))
                         logged_in.session.delete()
 
@@ -77,11 +88,6 @@ def customer_login(request):
                     # Get the session object
                     session = Session.objects.get(pk=request.session.session_key)
 
-                    # Get the user IP
-                    ip = request.META.get('HTTP_X_FORWARDED_FOR')
-                    if ip == None:
-                        ip=request.META.get('REMOTE_ADDR')
-
                     # Create an entry in the database
                     log_in = CustomerSession.objects.create(
                         customer=customer,
@@ -91,7 +97,9 @@ def customer_login(request):
                     )
 
                     log_in.save()
-                        # log db here
+                    AccessLog.objects.create(customer=customer,
+                                             level=AccessLog.SUCCESS,
+                                             notes="Logged in, IP: {}, Agent: {}".format(ip, request.META.get('HTTP_USER_AGENT')))
 
                     # Set session Variable
                     request.session['user_name'] = customer.user_name
@@ -102,7 +110,9 @@ def customer_login(request):
 
             else:
                 # create error message if invalid
-                # log db here
+                AccessLog.objects.create(customer=Customer.objects.filter(user_name=form.cleaned_data['user_name']).first(),
+                                         level=AccessLog.DANGER,
+                                         notes="Invalid username and password combination. Username: {}, IP: {}".format(form.cleaned_data['user_name'], ip))
                 form.add_error(None, 'Invalid username and password combination.')
 
     return render(request, 'customer_login.html', { 'form': form })

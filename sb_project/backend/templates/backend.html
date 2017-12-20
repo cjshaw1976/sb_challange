@@ -1,7 +1,52 @@
 {% extends "base.html" %}
 {% load static %}
+{% load bootstrap_tags %}
 
 
 {% block content %}
 <h1>Backend</h1>
+<div class="table-responsive">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Timestamp</th>
+        <th>Customer</th>
+        <th>Staff</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for record in log %}
+      <tr class="{{ record.level|lower }}">
+        <td>{{ record.timestamp }}</td>
+        <td>{{ record.customer }}</td>
+        <td>{{ record.user }}</td>
+        <td>{{ record.notes }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% if log.has_other_pages %}
+  <ul class="pagination">
+    {% if log.has_previous %}
+      <li><a href="?page={{ log.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in log.paginator.page_range %}
+      {% if log.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if log.has_next %}
+      <li><a href="?page={{ log.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+
 {% endblock %}

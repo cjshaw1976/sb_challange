@@ -4,7 +4,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, redirect, get_object_or_404
 
 from .forms import AccountForm
-from .models import Customer
+from .models import Customer, AccessLog
 
 from twilio.rest import Client
 from twilio.base.exceptions import TwilioRestException
@@ -49,6 +49,10 @@ def newAccount(request):
             account.save()
 
             messages.success(request, 'Account for {} {} has been successfully created!'.format(account.first_name, account.last_name))
+            AccessLog.objects.create(customer=account,
+                                     user=request.user,
+                                     level=AccessLog.SUCCESS,
+                                     notes='Account created successfully!')
 
             # Send SMS
             try:
@@ -58,10 +62,16 @@ def newAccount(request):
                     from_="+13345642095",
                     body="Your SB account {} has been opened.".format(account.pk))
                 messages.success(request, 'SMS sent to {} successfully!'.format(form.cleaned_data['phone_number']))
+                AccessLog.objects.create(customer=account,
+                                         level=AccessLog.SUCCESS,
+                                         notes='SMS sent to {} successfully!'.format(form.cleaned_data['phone_number']))
 
             except TwilioRestException as e:
                 print(e)
                 messages.warning(request, 'SMS sent to {} Failed! Please see error console.'.format(form.cleaned_data['phone_number']))
+                AccessLog.objects.create(customer=account,
+                                         level=AccessLog.WARNING,
+                                         notes="SMS sending failed. {}".format(e))
 
             return redirect('view_account', user_name=account.user_name)
 
