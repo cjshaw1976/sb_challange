@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load static %}
+{% load bootstrap_tags %}
+
+{% block content %}
+<h1>Backend Totals</h1>
+<hr>
+<h3>Number of accounts captured by each staff member</h3>
+<div class="table-responsive">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Staff User</th>
+        <th>Accounts Captured</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for record in created %}
+      <tr>
+        <td>{{ record.created_by__username }}</td>
+        <td>{{ record.created_count }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+<hr>
+<h3>Log of recently captured accounts</h3>
+<div class="table-responsive">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Timestamp</th>
+        <th>Customer</th>
+        <th>Staff User</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for record in customers %}
+      <tr>
+        <td>{{ record.created_date }}</td>
+        <td>{{ record.last_name }}, {{ record.first_name }}</td>
+        <td>{{ record.created_by }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% if customers.has_other_pages %}
+  <ul class="pagination">
+    {% if customers.has_previous %}
+      <li><a href="?page={{ customers.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in customers.paginator.page_range %}
+      {% if customers.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if customers.has_next %}
+      <li><a href="?page={{ customers.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+
+
+{% endblock %}

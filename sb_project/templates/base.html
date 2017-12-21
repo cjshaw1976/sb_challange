@@ -27,11 +27,18 @@
               {% url 'list_accounts' as list_path %}
               {% url 'new_account' as new_path %}
               {% url 'backend' as back_path %}
+              {% url 'backend_logs' as log_path %}
 
               {% if user.is_authenticated %}
               <li{% if list_path == request.path %} class="active"{% endif %}><a href="{% url 'list_accounts' %}">All Accounts{% if list_path == request.path %}<span class="sr-only"> (current)</span>{% endif %}</a></li>
               <li{% if new_path == request.path %} class="active"{% endif %}><a href="{% url 'new_account' %}">New Account{% if new_path == request.path %}<span class="sr-only"> (current)</span>{% endif %}</a></li>
-              <li{% if back_path == request.path %} class="active"{% endif %}><a href="{% url 'backend' %}">Backend{% if back_path == request.path %}<span class="sr-only"> (current)</span>{% endif %}</a></li>
+              <li class="dropdown{% if back_path == request.path or log_path == request.path %} active{% endif %}">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Backend<span class="caret"></span>{% if back_path == request.path or log_path == request.path %}<span class="sr-only"> (current)</span>{% endif %}</a>
+                <ul class="dropdown-menu">
+                  <li{% if back_path == request.path %} class="active"{% endif %}><a href="{% url 'backend' %}">Totals</a></li>
+                  <li{% if log_path == request.path %} class="active"{% endif %}><a href="{% url 'backend_logs' %}">Logs</a></li>
+                </ul>
+              </li>
               {% endif %}
             </ul>
             <ul class="nav navbar-nav navbar-right">
