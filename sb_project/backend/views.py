@@ -8,13 +8,23 @@ from account.models import AccessLog, Customer
 
 @login_required
 def backend(request):
-    # Get gata
+    # Get data
     customers = Customer.objects.order_by('last_name', 'first_name')
     users = User.objects.order_by('last_name', 'first_name')
     log_list = AccessLog.objects.order_by('-timestamp')
+
+    if request.GET.get('severity') and request.GET['severity'] != '':
+        log_list = log_list.filter(level=request.GET['severity'])
+
+    if request.GET.get('staff') and request.GET['staff'] != '':
+        log_list = log_list.filter(user__username=request.GET['staff'])
+
+    if request.GET.get('customer') and request.GET['customer'] != '':
+        log_list = log_list.filter(customer__user_name=request.GET['customer'])
+
     page = request.GET.get('page', 1)
 
-    paginator = Paginator(log_list, 10)
+    paginator = Paginator(log_list, 20)
 
     try:
         log = paginator.page(page)
