@@ -5,7 +5,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, redirect, get_object_or_404
 
 from rest_framework import viewsets
-from .serializers import UserSerializer, CustomerSerializer, AccessLogSerializer
+from .serializers import CustomerSerializer, AccessLogSerializer
 
 from .forms import AccountForm
 from .models import Customer, AccessLog
@@ -25,13 +25,6 @@ auth_token  = "c516d4d8c58b54da9422271521fa2a81"
 
 
 # API Views
-class UserViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows users to be viewed or edited.
-    """
-    queryset = User.objects.all().order_by('-date_joined')
-    serializer_class = UserSerializer
-
 class CustomerViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
@@ -77,10 +70,6 @@ def newAccount(request):
             account.save()
 
             messages.success(request, 'Account for {} {} has been successfully created!'.format(account.first_name, account.last_name))
-            AccessLog.objects.create(customer=account,
-                                     user=request.user,
-                                     level=AccessLog.SUCCESS,
-                                     notes='Account created successfully!')
 
             # Send SMS
             try:

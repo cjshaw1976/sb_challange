@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.contrib.auth.models import User
 from django.contrib.sessions.models import Session
 from django.utils import timezone
@@ -30,6 +32,16 @@ class Customer(models.Model):
     def __str__(self):
         return self.user_name
 
+# Create the log entry here so it is fired by both the form and api
+@receiver(post_save, sender=Customer)
+def log_create(sender, instance, created, **kwargs):
+    if created:
+        AccessLog.objects.create(customer=instance,
+                                 user=instance.created_by,
+                                 level=AccessLog.SUCCESS,
+                                 notes='Account created successfully!')
+
+        # Todo, move send sms here
 
 class CustomerSession(models.Model):
     customer = models.OneToOneField(Customer)
