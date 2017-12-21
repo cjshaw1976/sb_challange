@@ -39,6 +39,7 @@
                   <li{% if log_path == request.path %} class="active"{% endif %}><a href="{% url 'backend_logs' %}">Logs</a></li>
                 </ul>
               </li>
+              <li><a href="/api/" target="BLANK">View REST API</a></li>
               {% endif %}
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -76,7 +77,11 @@
               <li><b>Send SMS notification to customer when account is successfully opened, showing their account number.</b> I have intrgrated with https://www.twilio.com. As there is no credit, the sms's are not sent, but the intregration is in place.</li>
               <li><b>Create a dummy backend to support this process.</b> This is availiable only to logged in staff, and displays a basic log and some totals.</li>
             </ol>
-            <p><b></b></br></p>
+            <h4>Beyond the Brief.</h4>
+            <ol>
+              <li><b><a href="/api/">REST API.</a></b> As Django is a python web framework, I have not created a mobile interface. Instead I have implemented the Django REST framework, so that all of the feature available in the web interface are available through the API. A moble app can be rapidly developed to use the API.</li>
+              <li><b>Bootstrap 3.</b> Rather than design an interface from scratch, I have used the popular Bootstrap 3 framework for a responsive design that was quick to implement.</li>
+            </ol>
             <h4>Skills utilized.</h4>
             <p><b>Backend:</b>
               <ul>

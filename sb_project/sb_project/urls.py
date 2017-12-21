@@ -19,7 +19,18 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 
+from rest_framework import routers
+from account.views import UserViewSet, CustomerViewSet, AccessLogViewSet
+
+# Routes for API views
+router = routers.DefaultRouter()
+router.register(r'users', UserViewSet)
+router.register(r'customers', CustomerViewSet)
+router.register(r'accesslog', AccessLogViewSet)
+
 urlpatterns = [
+    url(r'^api/', include(router.urls, namespace="api")),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^login/$', auth_views.login, name='staff_login'),
     url(r'^logout/$', auth_views.logout, {'next_page': '/'}, name='staff_logout'),
     url(r'^admin/', admin.site.urls),

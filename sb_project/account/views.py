@@ -1,7 +1,11 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, redirect, get_object_or_404
+
+from rest_framework import viewsets
+from .serializers import UserSerializer, CustomerSerializer, AccessLogSerializer
 
 from .forms import AccountForm
 from .models import Customer, AccessLog
@@ -18,6 +22,30 @@ an SMS, otherwise putting these detail publically on github is a bad idea.
 account_sid = "AC819e285399a13897370bcc8f7f160ffa"
 # Your Auth Token from twilio.com/console
 auth_token  = "c516d4d8c58b54da9422271521fa2a81"
+
+
+# API Views
+class UserViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = User.objects.all().order_by('-date_joined')
+    serializer_class = UserSerializer
+
+class CustomerViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = Customer.objects.all().order_by('-created_date')
+    serializer_class = CustomerSerializer
+
+class AccessLogViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    A simple ViewSet for viewing accounts.
+    """
+    queryset = AccessLog.objects.all().order_by('-timestamp')
+    serializer_class = AccessLogSerializer
+
 
 # List all customers accounts
 @login_required
