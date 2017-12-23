@@ -5,6 +5,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, redirect, get_object_or_404
 
 from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+
 from .serializers import CustomerSerializer, AccessLogSerializer
 
 from .forms import AccountForm
@@ -30,6 +32,7 @@ class CustomerViewSet(viewsets.ModelViewSet):
     API endpoint that allows users to be viewed or edited.
     """
     queryset = Customer.objects.all().order_by('-created_date')
+    permission_classes = (IsAuthenticatedOrReadOnly,)
     serializer_class = CustomerSerializer
 
 class AccessLogViewSet(viewsets.ReadOnlyModelViewSet):

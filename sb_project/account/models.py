@@ -57,8 +57,8 @@ class CustomerSession(models.Model):
 class AccessLog(models.Model):
     SUCCESS = 'SUCCESS' # Greeen
     INFO = 'INFO'       # Blue
-    WARNING = 'WARNING'       # Orange
-    DANGER = 'DANGER'     # Red
+    WARNING = 'WARNING' # Orange
+    DANGER = 'DANGER'   # Red
 
     LEVEL_CHOICES = (
         (SUCCESS, 'success'),
