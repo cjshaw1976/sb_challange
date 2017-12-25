@@ -3,5 +3,17 @@
 
 
 {% block content %}
-<h1>Home Page</h1>
+<h1>Steward Bank Freelancer Project Challange.</h1>
+<h4>Christoper J. Shaw, Dec 2017</h4>
+<p>This project is created entirely with open source software. All work is my own, feel free to take inspiration.</p>
+
+<h2>Getting Started</h2>
+<h4>Installing on local computer.</h4>
+<p>To run this project, your local computer requires Python 3 installed. There are plenty of recourses on the internet to describe how to install Python 3 on different operating systems.</p>
+<p><b>These instructions are for a Linux based environment.</b> Download and unzip the project from <a href="https://github.com/cjshaw1976/sb_challange/archive/master.zip">github.</a></br> cd into the folder sb_challenge-master and create a virtual environment in the folder .p3 with the command <code>python3 -m venv .p3</code>.</br> Next, activate the environment <code>source .p3/bin/activate</code>. Install the required project files with the command <code>pip install -r requirements.txt</code></p>
+<p>Before starting the server, you need to initialize the database. cd into the folder sb_protect and run the command <code>python manage.py makemigrations</code> followed by <code>python manage.py migrate</code>. You will need to create a superuser with the command <code>python manage.py createsuperuser</code>. You will be prompted for a username, email and password. This will be your install staff user. You can log into the django admin with this combination to add more staff. To run the project, use the command <code>python manage.py runserver</code>. You will then be able to open the project frontend in your browser <a href="http://127.0.0.1:8000">http://127.0.0.1:8000</a> or django admin <a href="http://127.0.0.1:8000/admin">http://127.0.0.1:8000/admin</a>.</p>
+<h4>Logging in as staff member</h4>
+<p>To log in as a member of staff, click the 'Staff Log In' in the top right. Use the django supersuer credentials to login. Once successfully logged in, you are taken to the customers list and it will be empty on a new installation. Click 'New Account' to create a new account customer. There are also some simple backend reports as well as a link to the REST API.</p>
+<h4>Logging in as a customer</h4>
+<p>To log in as a customer, simply click the 'Customer Log In' and enter a username / password captured.</p>
 {% endblock %}
